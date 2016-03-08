@@ -1,0 +1,28 @@
+# Files to ignore in a LaTeX project 
+
+syntax: glob
+ 
+# General files to ignore
+*~
+*.bak
+
+# Gedit LaTeX ini file
+.*.ini
+
+# LaTeX compilation artifacts
+*.aux
+*.bbl
+*.blg
+*.brf
+*.fls
+*.lof
+*.log
+*.lot
+*.nav
+*.out
+*.snm
+*.synctex.gz
+*.thm
+*.toc
+*.vrb
+*.fdb_latexmk
