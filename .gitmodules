@@ -1,0 +1,6 @@
+[submodule "hogent-latex-sjablonen"]
+	path = hogent-latex-sjablonen
+	url = git@github.com:bertvv/hogent-latex-sjablonen.git
+[submodule "bachproef-gids"]
+	path = bachproef-gids
+	url = git@github.com:tsDaenor/bachproef-gids.git
