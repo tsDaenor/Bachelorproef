@@ -1,0 +1,21 @@
+\chapter{Docker}
+\section{Geschiedenis van Containers}
+%TODO bron docker relases invoegen
+%TODO chroot bron: http://www.faqs.org/faqs/unix-faq/faq/part6/section-2.html
+%TODO what chroot does: http://man7.org/linux/man-pages/man2/chroot.2.html
+Docker op zich bestaat nog niet zo lang. Versie 0.1.0 is uitgekomen op 26 maart 2016 en versie 1.0.0 en dus de eerste effectieve release kwam uit op 9 juni 2014. Hierdoor is er nog niet veel geschiedenis aan Docker. Maar als we terugkijken naar de evolutie van containers gaat dit verder terug. 
+Het idee van containers gaat terug tot 1979 met de toevoeging van chroot in UNIX V7. chroot is een eerste concept van containerization. Hierbij wordt voor elk proces een geisoleerde ruimte op de schijf voorzien, ook wel een "chroot jail" genoemd.
+%TODO http://imesh.io/evolution-of-linux-containers-and-future/
+Na chroot duurde het tot het jaar 2000 tot het volgende op de markt kwam. FreeBSD Jails(2000) en Linux VServer(2001) waren beide jail mechanismen die verder bouwden op chroot. Hiernaa kwamen enkele oplossingen op de markt die al dichter bij de container die we nu kennen aansluiten namelijk Solaris Containers(2004), OpenVZ(2005), Process Containers(2006) en Control Groups(2007).
+
+Daarna werd in 2008 LXC (LinuX Containers) toegevoegd aan de linux kernel. Dit was de basis voor latere containerizatie technologieën. LXC cobineerde het gebruik van cgroups (dit stond in voor isolatie en resource management) en namespaces (dit zorgde ervoor dat groups opgesplitst konden worden waardoor ze elkaar niet kunnen "zien")\cite{The Docker Ecosystem: An Overview of Containerization | DigitalOcean2015}. De eerste versies van Docker waren ontwikkeld als een interne tool bij het bedrijf dotCloud. Deze tool zorgde voor een versimpeling voor het gebruik van LXC. Later werd dit uitgebracht onder de naam Docker een 	en werd de LCX container vervangen door hun eigen driver LibContainer. Docker zorgde als een van de eerste voor een volledig ecosysteem voor het managen van containers\cite{evolution of linux containers & future2016}.
+ 
+\section{Wat is Docker}
+
+Docker is een open source project om een applicatie te verpakken, verzenden en te draaien als een weinig resources gebruikende container \cite{Docker:TheContainerEngine2016}. Anders gezegd word in een Docker Container alles om een programma te draaien verpackt in een compleet bestandsysteem namelijk: code, runtime, stysteem tool en systeem librairies. Alles wat je normaal op een server zou installeren. Dit garandeerd dat de applicatie zich altijd op dezelfde manier zal gedragen in welke omgeving het ook draait \citep{WatIsDocker2016}.
+
+Een vergelijking met virtuele machines is rap gemaakt. Voor resource isolatie werkt het op dezelfde manier. Maar waar de verschillen liggen is de grootte, flexibiliteit en performatie. Doordat Docker gebruik maakt van containerization gebeurt de virtualizatie op de kernel niveau tegenover virtuele machines waarbij dit niet zo is. 
+
+Een korte visualisatie van hoe containers werken kunnen we zien op de volgende foto's. Hierbij zien we dat traditioneel bij virtuele machines we op de host die zich rechtstreeks bevind op de hardware een hypervisor nodig hebben die onze hardware gaat virtualiseren voor gebruik van de virtuele gast machines. Op elke gast machine bevind zich een eigen besturingssysteem die uniek is voor elke gast. Daarnaast moeten ook onze applicatie draaien samen met de binaries en librairies die het nodig heeft 
+
+\section{Hoe gebruikt men Docker}
