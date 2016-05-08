@@ -7,9 +7,17 @@ In deze bachelorproef zal ik onderzoek doen naar de security en managebility van
 
 Deze bachelorprief is onderverdeeld in drie grote delen. In de eerste plaats bespreek ik de security zelf. In een tweede deel zal ik het hebben over de managebility van Docker containers. En als laatste onderdeel bespreek ik logging bij docker containers.
 
-\section{Probleemstelling en Onderzoeksvragen}
+\section{Probleemstelling en context}
 \label{sec:onderzoeksvragen}
 
 % TODO: Wees zo concreet mogelijk bij het formuleren van je
 % onderzoeksvra(a)g(en). Een onderzoeksvraag is trouwens iets waar nog
 % niemand op dit moment een antwoord heeft (voor zover je kan nagaan).
+
+Docker is een nieuwe speler op de virtualisatiemarkt die in korte tijd een substantieel marktaandeel hebben ingenomen. Hiervoor hebben ze linux LXC containers gebruiksvriendelijker gemaakt. Deze vorm van container ligt ergens in het midden tussen een chroot jail (isoleren van een proces van het rest van het systeem) en een volledige virtuele machine. Sinds Docker is uitgekomen voor het grote publiek zijn er altijd al vragen geweest naar in hoeverre deze vorm van virtualizatie veilig genoeg was om in productie te gebruiken. Als we in google iets zoeken rond problemen met docker of mensen die gestopt zijn met docker te gebruiken vinden we heel wat posts met als titel iets in de zin van "Why i stopped using docker". De meeste mensen stoppen met het gebruik van docker omdat ze problemen vinden met ofwel de beveiliging van de container omgeving ofwel hebben ze problemen met het managen van hun containers. Deze kritieken of problemen met docker zijn er al sinds de eerste uitgave van docker en blijven nu en dan de kop op steken.  
+
+\section{Doelstelling en onderzoeksvraag/-vragen}
+
+De doelstelling van deze bachelor proef bestaat uit het ophelderen van kritieken op vlak van de managebility en beveiliging van deze containers. Hiervoor gaan we eerst op zoek naar welke kritiekpunten er de kop opsteken. We zullen zo veel mogelijk kijken naar recentere kritieken omdat Docker rap geëvolueerd is kunnen kritieken van twee maand geleden al verouderd zijn. Daarna zullen we in de eerste plaats kijken als deze kritiek gerechtvaardigd is. Indien dit het geval is zal er onderzocht worden hoe we deze kritiekpunten mogelijks kunnen wegwerken met bepaalde zelf toepasbare technieken of best-practices? Of zijn er elementen die zullen moeten geïmplementeerd worden door de Docker community zelf?
+
+Daarnaast zijn er veel mensen die van Docker containers een veiligere en meer handelbare ervaring verwachten dan als ze met virtuele machines werken. Dus zullen we ook kijken hoe kunnen we Docker containers minstens op hetzelfde niveau krijgen zowel qua beheersbaarheid als op beveiligings vlak als een klassieke virtuele machine?
