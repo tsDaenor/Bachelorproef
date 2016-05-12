@@ -1,7 +1,24 @@
 \chapter{Managebility}
 
+Wanneer we de managebility van Docker containers gaan bekijken hebben we drie opties, in de eerste plaats kunnen we alles manueel managen. Daarnaast kunnen we ook alles automatisch laten managen door een proces manager. Ofwel kunnen we tools gebruiken om onze containers te managen. Als we bezig zijn met het managen van Docker containers moeten we ook rekening houden met het managen van onze docker images. 
+
 \section{Manueel managen}
 
-\section{Managen met systemd units}
+
+\section{Managen met process manager}
+
+Een andere optie die we hebben is onze containers managen met een process manager. Hierbij kunnen we onze containers gaan bekijken alsof het processen zijn. Als we oze containers managen met een process manager gaan we zelf configuratie bestanden gaan schrijven voor de gekozen process manager. Die gekozen manager zal dan deze bestanden inlezen en volgens de gekozen parameters starten en managen zoals het een ander process zou beheren. Een voorbeeld hiervan is het gebruik van Systemd Unit files. Dit vinden we hieronder uitgewerkt voor de Redis Container uit hoofdstuk drie.
+
+\begin{lstlisting}[language=bash, style=configstyle]
+[Unit]
+Description=Run a redis container
+Author=Toon Lamberigts & Tomas Vercautter
+Requires=docker.service
+
+[Service]
+ExecStartPre=-/usr/bin/docker rm redis
+ExecStart=/usr/bin/docker run --rm --name redis-container -h redis-host redis
+ExecStop=/usr/bin/docker stop -t 2 redis
+\end{lstlisting}
 
 \section{Managen met tools}
