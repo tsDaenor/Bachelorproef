@@ -34,15 +34,31 @@ Het idee van containers gaat terug tot 1979 met de toevoeging van chroot in UNIX
 %TODO http://imesh.io/evolution-of-linux-containers-and-future/
 Na chroot duurde het tot het jaar 2000 tot het volgende op de markt kwam. FreeBSD Jails(2000) en Linux VServer(2001) waren beide jail mechanismen die verder bouwden op chroot. Hiernaa kwamen enkele oplossingen op de markt die al dichter bij de container die we nu kennen aansluiten namelijk Solaris Containers(2004), OpenVZ(2005), Process Containers(2006) en Control Groups(2007).
 
-Daarna werd in 2008 LXC (LinuX Containers) toegevoegd aan de linux kernel. Dit was de basis voor latere containerizatie technologieën. LXC cobineerde het gebruik van cgroups (dit stond in voor isolatie en resource management) en namespaces (dit zorgde ervoor dat groups opgesplitst konden worden waardoor ze elkaar niet kunnen "zien")\cite{The Docker Ecosystem: An Overview of Containerization | DigitalOcean2015}.In 2014 werd de versie 1.0 van LXC uitgebracht. Hierbij werd onder andere support toegevoegd voor SELinux. De eerste versies van Docker waren ontwikkeld als een interne tool bij het bedrijf dotCloud. Deze tool zorgde voor een versimpeling voor het gebruik van LXC. Later werd dit uitgebracht onder de naam Docker een 	en werd de LCX container vervangen door hun eigen driver LibContainer. Docker zorgde als een van de eerste voor een volledig ecosysteem voor het managen van containers\cite{evolution of linux containers & future2016}.
+Daarna werd in 2008 LXC (LinuX Containers) toegevoegd aan de linux kernel. Dit was de basis voor latere containerizatie technologieën. LXC cobineerde het gebruik van cgroups (dit stond in voor isolatie en resource management) en namespaces (dit zorgde ervoor dat groups opgesplitst konden worden waardoor ze elkaar niet kunnen "zien")\cite{Ellingwood2015}.In 2014 werd de versie 1.0 van LXC uitgebracht. Hierbij werd onder andere support toegevoegd voor SELinux. De eerste versies van Docker waren ontwikkeld als een interne tool bij het bedrijf dotCloud. Deze tool zorgde voor een versimpeling voor het gebruik van LXC. Later werd dit uitgebracht onder de naam Docker een 	en werd de LCX container vervangen door hun eigen driver LibContainer. Docker zorgde als een van de eerste voor een volledig ecosysteem voor het managen van containers \cite{Gunaratne2016}.
  
 \section{Wat is Docker}
 
-Docker is een open source project om een applicatie te verpakken, verzenden en te draaien als een weinig resources gebruikende container \cite{Docker:TheContainerEngine2016}. Anders gezegd word in een Docker Container alles om een programma te draaien verpackt in een compleet bestandsysteem namelijk: code, runtime, stysteem tool en systeem librairies. Alles wat je normaal op een server zou installeren. Dit garandeerd dat de applicatie zich altijd op dezelfde manier zal gedragen in welke omgeving het ook draait \citep{WatIsDocker2016}.
+Docker is een open source project om een applicatie te verpakken, verzenden en te draaien als een weinig resources gebruikende container. Anders gezegd word in een Docker Container alles om een programma te draaien verpackt in een compleet bestandsysteem namelijk: code, runtime, stysteem tool en systeem librairies. Alles wat je normaal op een server zou installeren. Dit garandeerd dat de applicatie zich altijd op dezelfde manier zal gedragen in welke omgeving het ook draait \cite{Docker2016d}.
 
 Een vergelijking met virtuele machines is rap gemaakt. Voor resource isolatie werkt het op dezelfde manier. Maar waar de verschillen liggen is de grootte, flexibiliteit en performatie. Doordat Docker gebruik maakt van containerization gebeurt de virtualizatie op de kernel niveau tegenover virtuele machines waarbij dit niet zo is. 
 
-Een korte visualisatie van hoe containers werken kunnen we zien op de volgende foto's. Hierbij zien we dat traditioneel bij virtuele machines we op de host die zich rechtstreeks bevind op de hardware een hypervisor nodig hebben die onze hardware gaat virtualiseren voor gebruik van de virtuele gast machines. Op elke gast machine bevind zich een eigen besturingssysteem die uniek is voor elke gast. Daarnaast moeten ook onze applicatie draaien samen met de binaries en librairies die het nodig heeft. Bij containerisatie en specifiek voor docker containers wordt de hypervizor vervangen door de docker engine en gaan we voor elke applicatie onze binaries en libraries samen met de applicatie zelf gaan draaien in onze container. Hierdoor krijgen we snellere deployment, opstart tijden en migratie en daarnaast hebben we ook veel minder overhead doordat niet ekle applicatie moet draaien op een eigen besturingssysteem en een eigen kernel. 
+\begin{figure}[!ht]
+	\centering
+	\begin{minipage}{.5\textwidth}
+		\centering
+		\includegraphics[width=.7\linewidth]{img/what-is-docker-diagram.png}
+		\caption{Virtualisatie bij Virtuele machines- \protect\cite{Docker2016d}}
+		\label{fig:test1}
+	\end{minipage}%
+	\begin{minipage}{.5\textwidth}
+		\centering
+		\includegraphics[width=.7\linewidth]{img/what-is-vm-diagram.png}
+		\caption{Virtualisatie bij Docker Containers - \protect\cite{Docker2016d}}
+		\label{fig:test2}
+	\end{minipage}
+\end{figure}
+
+Een korte visualisatie van hoe containers werken kunnen we zien op de voorgaande foto's. Hierbij zien we dat traditioneel bij virtuele machines we op de host die zich rechtstreeks bevind op de hardware een hypervisor nodig hebben die onze hardware gaat virtualiseren voor gebruik van de virtuele gast machines. Op elke gast machine bevind zich een eigen besturingssysteem die uniek is voor elke gast. Daarnaast moeten ook onze applicatie draaien samen met de binaries en librairies die het nodig heeft. Bij containerisatie en specifiek voor docker containers wordt de hypervizor vervangen door de docker engine en gaan we voor elke applicatie onze binaries en libraries samen met de applicatie zelf gaan draaien in onze container. Hierdoor krijgen we snellere deployment, opstart tijden en migratie en daarnaast hebben we ook veel minder overhead doordat niet ekle applicatie moet draaien op een eigen besturingssysteem en een eigen kernel. 
 
 \section{Hoe gebruikt men Docker}
 
@@ -61,11 +77,19 @@ Wanneer we images gebruiken hebben we twee opties. Aan de ene kant kunnen we de 
 \paragraph{Docker images van een repository}~\\
 
 In dit voorbeeld gaan we de Docker hub repository gebruiken. Dit is de officiële repository van Docker. Iedereen kan images uploaden naar de Docker hub. Het enige dat daarvoor benodigd is, is een Docker hub account. Om te kijken welke Images er beschikbaar zijn hebben we 2 opties. Ofwel kijken we op de website van docker hub (hub.docker.com). Hier kunnen we met behulp van de search bar (zie image) Docker images zoeken. We kunnen dit ook direct van de command line. Dit doen we met het commando 'docker search ZOEKTERM', hierbij doorzoeken we alle geïnstalleerde registries op onze machine (standaard is dit enkel de Docker hub). Om een voorbeeld te geven gaan we op zoek naar een image genaamd 'docker-alpine-redis' het resultaat van deze zoekopdracht volgens de twee voorgaande methodes kunt u vinden in de volgende figuren.
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[scale=0.315]{img/dockerSearchSite.png}
+	\caption{Zoeken naar images op de docker hub site}
+\end{figure}
 
-\includegraphics[scale=0.315]{img/dockerSearchSite.png}
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[scale=0.55]{img/dockerSearchCommand.png}
+	\caption{Zoeken naar images via command-line}
+\end{figure}	
 
 
-\includegraphics[scale=0.55]{img/dockerSearchCommand.png}
 
 
 \paragraph{Eigen Docker images maken}~\\
@@ -116,7 +140,13 @@ In deze Dockerfile zien we een aantal sleutelwoorden in het rood. deze zijn de v
 
 Het creëren van een image uit een Dockerfile doen we met het docker build commando doen we met het commando 'docker build [OPTIONS] PATH' waarbij de 'PATH' wordt vervangen door het pad (relatief of absoluut) naar de buildcontext die zal worden meegegeven naar de docker daemon voor het builden van de image. In ons geval is dit de map die we daarnet hebben aangemaakt. De Docker daemon zal an op zoek gaan in de root van de buildcontect naar een Dockerfile en de met sleutelwoorden gedefinieerde commando's uitvoeren en een Docker image maken van onze Dockerfile. Indien de dockerfile niet in de root van onze buildcontext bevindt kunnen we met de optie '-f' een relatief pad naar onze Dockerfile toevoegen. Met de optie '-t' kunnen we een eigen tag meegeven aan onze image. Dit helpt ons met het identificeren welke image wat is. In ons voorbeeld met de Dockerfile voor redis is het commando 'docker build -t redis .' indien we ons in de map met de Dockerfile bevinden. Na het uitvoeren van het commando hebben we een image genaamd redis gemaakt met onze Dockerfile. Dit kunnen we controleren met het 'docker images' commando. Dit geeft ons een lijst met alle images die zich lokaal op onze machine bevinden. In ons geval geeft dit de volgende output. Hierop kunnen we zien dat de image voor 'alpine:3.3' is gedownload doordat we dit als base image hebben gedefineerd en dat onze 'redis' image is aangemaakt.
 
-\includegraphics[scale=0.55]{img/dockerImages.png}
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[scale=0.55]{img/dockerImages.png}
+	\caption{Output van het docker images commando}
+\end{figure}
+
 
 
 \subsection{docker run}
@@ -125,4 +155,9 @@ Met het 'docker run [OPTIONS] IMAGE[:TAG|@DIGEST] [COMMAND] [ARG...]' commando k
 
 Daarnaast kunnen we ook opties meegeven aan het run commando. Hiermee kunnen we volumes mounten met de '-v' optie, extra poorten exposen die nog niet in de image gedefinieerd zijn met '--expose', poorten van de container mappen op poorten van de host met de '-p' optie, een naam megeven aan onze container met de optie '--name'  of de container detached laaten draaien met de optie '-d' indien we dit niet meegeven wordt de container attached aan ons terminal venster en kunnen we het voor niets anders meer gebruiken. Dit zijn slechts enkel voorbeelden van opties die we hebben de rest van de opties zijn te vinden in de docker run reference (TODO INSERT LINK TO REFERENCE BIJLAGE?). Ook kunnen we commando's meegeven bij het runnen van een container. Het meegegeven commando wordt uitgevoer als we de container opstartn. Er moet altijd een commando meegegeven worden als we een container willen starten maar dit kan ook worden meegegeven in de image. Als voorbeeld zullen we de redis image dat we daarnet hebben gemaakt laden in een container. Hiervoor gebruiken we het commando 'docker run -d --name redisContainer redis'. Dit maakt van onze image genaamd redis een container genaamd redisContainer die detached draait. Om te controleren als onze container nu draait gebruikten we het commando 'docker ps' dit geeft ons een lijst van alle draaiende containers op onze machine. 
  
-\includegraphics[scale=0.35]{img/dockerps.png}
+ 
+\begin{figure}[!ht]
+ 	\centering
+ 	\includegraphics[scale=0.35]{img/dockerps.png}
+ 	\caption{Output van het docker ps commando}
+\end{figure}

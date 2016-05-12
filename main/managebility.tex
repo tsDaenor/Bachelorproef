@@ -7,7 +7,7 @@ Wanneer we de managebility van Docker containers gaan bekijken hebben we drie op
 
 \section{Managen met process manager}
 
-Een andere optie die we hebben is onze containers managen met een process manager. Hierbij kunnen we onze containers gaan bekijken alsof het processen zijn. Als we oze containers managen met een process manager gaan we zelf configuratie bestanden gaan schrijven voor de gekozen process manager. Die gekozen manager zal dan deze bestanden inlezen en volgens de gekozen parameters starten en managen zoals het een ander process zou beheren. Een voorbeeld hiervan is het gebruik van Systemd Unit files. Dit vinden we hieronder uitgewerkt voor de Redis Container uit hoofdstuk drie.
+Een andere optie die we hebben is onze containers managen met een process manager. Hierbij kunnen we onze containers gaan bekijken alsof het processen zijn. Als we oze containers managen met een process manager gaan we zelf configuratie bestanden gaan schrijven voor de gekozen process manager. Die gekozen manager zal dan deze bestanden inlezen en vervolgens de met de parameters vanuit de configuratie bestanden onze containers starten en managen zoals het een ander process zou beheren. Een voorbeeld hiervan is het gebruik van Systemd Unit files. Dit vinden we hieronder uitgewerkt voor de Redis Container uit hoofdstuk drie.
 
 \begin{lstlisting}[language=bash, style=configstyle]
 [Unit]

@@ -1,40 +1,19 @@
 \section{Docker daemon configuratie}
 
-Bij het beveiligen van de docker stack is ook de configuratie van de docker daemon een belangrijk element. Dit heeft twee grote onderdelen. Enerzijds de configuratie van de docker daemon zelf, dit houd in dat we de daemon zelf zo gaan configureren dat deze zo veilig en robuust mogelijk wordt. Aan de andere kant moeten we ook zorgen dat de configuratie files zelf de juiste file permissies en owners hebben. Hierbij is de vergelijking met een virtuele machine, waar de services rechtstreeks op draaien, moeilijk aangezien er hier geen docker daemon op te vinden is. Omdat het configureren van de Docker daemon dingen verandert doe voor elke container toegepast worden kunnen we het wel vergelijken met hoe de inviduele services globaal geconfigureerd worden.
+Bij het beveiligen van de docker stack is ook de configuratie van de docker daemon een belangrijk element. Dit heeft twee grote onderdelen. Enerzijds de configuratie van de docker daemon zelf, dit houd in dat we de daemon zelf zo gaan configureren dat deze zo veilig en robuust mogelijk wordt. Aan de andere kant moeten we ook zorgen dat de configuratie files zelf de juiste file permissies en owners hebben. Hierbij is de vergelijking met een virtuele machine, waar de services rechtstreeks op draaien, moeilijk aangezien er hier geen docker daemon op te vinden is. Omdat het configureren van de Docker daemon dingen verandert die voor elke container toegepast worden kunnen we het wel vergelijken met hoe de inviduele services globaal geconfigureerd worden.
 
 % TODO find information about docker binding on IP/Port or UNIX socket
 % https://docs.docker.com/articles/basics/#bind-docker-to-another-hostport-or-a-unix-socket
 
 \subsection{Globale configuratie}
 
-% TODO find info about Docker switch from lxs to libcontainer
 
-% lxc
-% logging level
-% storage driver
+Oorspronkelijk was (zoals uitgelgd in 3.1 Geschiedenis van Containers) Docker gemaakt als een interne tool voor dotCloud om het gebruik van LXC (LinuX Containers) te vergemakkelijkeren. Docker kan nu (op het moment van het schrijven van deze Bachelorproef) nog gebruik maken van de LXC Dirver om containers uit te voeren. Al is er ondersteuning voor deze uitvoering met LXC wordt dit niet aangeraden. Zonder expliciet mee te geven aan de Docker daemon dat LXC als 'execution driver' moet gebruikt worden wordt libcontainer van Docker zelf gebruikt. Hier ligt ook de verdere ontwikkeling en ondersteuning voor onder andere meer geavanceerde netwerking, firewall en beveiliging.
 
 \subsection{netwerk configuratie}
 
-% inter container communication
-
-% ip tables
-
-% Tls authentication
-
-\subsection{registry configuratie}
-
+Docker heeft om netwerk misconfiguratie te vermijden toegang nodig to de iptables. Dit wordt gebruikt voor het opzetten, onderhouden en inspecteren van filter regels voor IP pakketten in de linux kernel \cite{Eychenne2016}. Deze permissie is standaard toegewezen aan Docker. Naast de permissies voor de iptables is er ook standaard communicatie toegestaan tussen de containers onderling zelfs zonder containers te linken met '--link=CONTAINERNAME'. Dit wordt aangeraden om dit af te zetten door de docker daemon op te starten met de flag '--icc=false'. Indien we dit niet doen kan er ongewenste communicatie zijn tussen twee containers. Containers kunnen na het toevoegen van de inter container communication flag nog altijd communiceren met elkaar mits het expliciet linken van de gewenste containers met '--link=CONTAINERNAME'. 
 
 \subsection{Permissies voor Docker config files}
 
-Het configureren van de Docker daemon met de juiste instellingen voor zowel networking, registry gebruik en algemene configuratie heeft enkel nut als we ook de configuratie files waarin deze instellingen worden bewaard correct beveiligd zijn. 
-
-% TODO Docker.Service file use?
-% TODO DOcker-registry.service file use?
-% TODO Docker.socket file use?
-% TODO Docker environment file? whut 
-% TODO Docker-network invironment file? 
-% TODO docker-registry environment file?
-% TODO Docker-storage environment file?
-% TODO what is stored in /etc/docker folder?
-% 
-
+Het configureren van de Docker daemon met de juiste instellingen voor zowel networking, registry gebruik en algemene configuratie heeft enkel nut als we ook de configuratie files waarin deze instellingen worden bewaard correct beveiligd zijn. Standaard worden de bestanden die Docker gebruikt pas aangemaakt wanneer de daemon ze nodig heeft. Deze worden ook aangemaakt met de correcte permissies. De '/etc/docker' folder waarin alle files in verband met containers en images onder andere worden in opgeslagen. Deze is standaard beveiligd met toegewezen gebruikers groep en eigenaar op 'root' en permissies hiervoor  lezen, schrijven en uitvoeren voor de eigenaar en enkel lees en uitvoerrechten (dus ook niet verwijderen) voor de niet-eigenaars \cite{Shotts2016}.
