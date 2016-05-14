@@ -4,6 +4,47 @@ Wanneer we de managebility van Docker containers gaan bekijken hebben we drie op
 
 \section{Manueel managen}
 
+Een optie waarmee de meesten beginnen is het manueel managen van onze Docker containers. Bij Deze optie gaan we Manueel onze docker containers gaan uitvoeren of met behulp van een kort script of een makefile. Op deze manier kunnen we zowel onze containers managen als onze Docker images builden. Op deze manier onze containers managen is doenbaar indien we enkele containers moeten managen zoals in een development omgeving of een stabiele kleine omgeving. Het manueel managen van onze containers verwacht ook meer stabiliteit van onze containers. Indien er niemand de containers aan het monitoren zou zijn wanneer een container crasht, Moet er gewacht worden tot er iemand deze weer herstart. Hierdoor kan het dus gebeuren dat een container relatief langer onbeschikbaar is. In een development omgeving zijn de vereisten voor uptime veel lager. Hier is het manueel managen van onze containers en images wel een optie. Bij het manueel managen wordt er ook gebruik gemaakt van scripts of makefiles. Een voorbeeld van beide vind u hieronder.
+
+\begin{lstlisting}[language=bash, style=configstyle]
+CONTAINER ?= redis
+IMAGE_NAME ?= redis
+IMAGE_VERSION ?= latest
+
+
+# full image name
+IMAGE = $(IMAGE_NAME):$(IMAGE_VERSION)
+# full ssh connect vars
+CONNECT = $(REMOTE_USER_NAME)@$(IP)
+
+build:
+	docker build -t $(IMAGE) .
+
+run:
+	docker run -d --name $(CONTAINER) $(IMAGE)
+
+logs:
+	docker logs $(CONTAINER)
+
+kill_container:
+	docker kill $(CONTAINER)
+
+remove_container:
+	docker rm $(CONTAINER)
+
+remove_image:
+	docker rmi $(IMAGE)
+
+update: kill_container remove_container remove_image build run
+\end{lstlisting}
+
+In deze makefile hebben we toegang tot de verschillende commando's die we normaal volledig met de hand zouden uitschrijven maar nu kunnen we deze aanroepen met 'make COMMANDO'. Als we dit bekijken met de voorgaande makefile zien we dat we voor onze redis container uit te voeren enkel 'make run' moeten uitvoeren terweil we anders 'docker run --name redis redis' moesten uitvoeren. Bij dit voorbeeld is het commando dat we zonder makefile zouden moeten uitvoeren nog beperkt maar als we meer opties meegeven met ons commando wordt het interresanter voor ons om een kort make commando uit te voeren dan elke keer dat we dezelfde container willen starten opnieuw het complete commando uit te typen. Ook behouden we onze consistentie bij het uitvoeren van de commando's en elimineren we eventuele menselijke fouten zoals typfouten. Het voordeel dat we hier hebben is dat we make commando's ook kunnen aanroepen in andere make commando's hierdoor kunnen we de het commando 'make update' maken. Deze verwijdert onze oude bestaande container en image. Daarna wordt een nieuwe image gemaakt en deze ingeladen in een nieuwe container. Bovenaan de makefile vinden we ook variabelen die gebruikt kunnen worden in onze make commando's. Met behulp van deze variabelen kunnen we een makefile snel aanpassen voor het gebruik met een ander commando.
+
+%TODO insert script here
+
+Bij het gebruik van scripts verkrijgen we ongeveer dezelfde functionaliteit als bij makefiles, enkel is de syntaks voor het uitvoeren anders en de manier waarop het geschreven is. Hierboven vinden we een script die dezelfde functionaliteit zou hebben als het 'make update' commando.
+
+
 
 \section{Managen met process manager}
 
@@ -16,9 +57,13 @@ Author=Toon Lamberigts & Tomas Vercautter
 Requires=docker.service
 
 [Service]
-ExecStartPre=-/usr/bin/docker rm redis
+ExecStartPre=-/usr/bin/docker rm redis-container
 ExecStart=/usr/bin/docker run --rm --name redis-container -h redis-host redis
 ExecStop=/usr/bin/docker stop -t 2 redis
 \end{lstlisting}
 
+Deze unit file zal bij het proberen starten van de bij behorende service ingeladen worden. Het 'ExecStartPre' gedeelte wordt uigevoerd voor de service effectief zal starten. Deze zal de container verwijderen indien deze bestaat, dit is om zeker te zijn dat er geen container genaamd 'redis-container' bestaat. Dit zou een fout genereren bij het opstarten van waardoor de service zou falen. Dus uit voorzorg proberen we te verwijderen voor het opstarten. Het onderdeel 'ExecStart' is het effectieve commando die de service zal uitvoeren en zich aan zal binden. In dit geval is dat onze redis container. We geven bij het opstarten via unit files geen flag '-d', detached mee omdat we willen dat de container zich bind aan de service waardoor we de container kunnen monitoren via de aangemaakte service. Hiervoor geven we ook de '--rm' tag mee, deze zorgt ervoor dat bij het stoppen van de container hij ook direct verwijdert wordt. Dit gebeurt jammer genoeg enkel bij een correcte terminatie van de container, dus indien de docker service crasht zal deze niet verwijderd worden maar wel gestopt.
+
 \section{Managen met tools}
+
+Een derde optie die we hebben is het managen met tools. Dit onderwerp zal ik niet uitgebreid beschrijven en moet geval per geval bekeken worden als dit een meerwaarde betekend voor het project met docker. Ik zal hier enkele voorbeelden van tools meegeven met hoe men ze gebruikt met docker. Er zijn veel tools op de markt dus de tools die hier worden beschreven is in geen enkele mate representatief voor de hoeveelheid tools die er bestaan. En zijn 
