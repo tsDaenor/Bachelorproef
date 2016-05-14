@@ -10,6 +10,7 @@ Een optie waarmee de meesten beginnen is het manueel managen van onze Docker con
 CONTAINER ?= redis
 IMAGE_NAME ?= redis
 IMAGE_VERSION ?= latest
+HOSTNAME ?= redis-host
 
 
 # full image name
@@ -21,7 +22,7 @@ build:
 	docker build -t $(IMAGE) .
 
 run:
-	docker run -d --name $(CONTAINER) $(IMAGE)
+	docker run -d --name $(CONTAINER) -h $(HOSTNAME) $(IMAGE)
 
 logs:
 	docker logs $(CONTAINER)
@@ -66,4 +67,23 @@ Deze unit file zal bij het proberen starten van de bij behorende service ingelad
 
 \section{Managen met tools}
 
-Een derde optie die we hebben is het managen met tools. Dit onderwerp zal ik niet uitgebreid beschrijven en moet geval per geval bekeken worden als dit een meerwaarde betekend voor het project met docker. Ik zal hier enkele voorbeelden van tools meegeven met hoe men ze gebruikt met docker. Er zijn veel tools op de markt dus de tools die hier worden beschreven is in geen enkele mate representatief voor de hoeveelheid tools die er bestaan. En zijn 
+Een derde optie die we hebben is het managen met tools. In dit onderdeel zal ik niet uitgebreid beschrijven hoe elke tool werkt en hoe je die moet gebruiken, dit moet geval per geval bekeken worden als dit een meerwaarde betekend voor het project met docker. Ik zal hier proberen een voorbeeld te geven hoe men tools zou kunnen gebruiken in een docker omgeving. De tool waarmee ik wat meer uitleg zal geven is vagrant. Deze tool is enkel een voorbeeld en is zeker niet de enige tool hievoor. Vagrant een tool ontwikkeld voor het gebruik in development en wordt door hashicorp ontwikkeld. Daarnaast hebben ze ook Nomad, een nieuwe tool die in moet staan voor de deployment van containers. Andere bedrijven hebben andere tools en zoals hierboven vermeld moet voor elke use case gekeken worden hoe tools eventueel kunnen geïntegreerd worden in het ontwikkelproces met docker. Het voorbeeld van Vagrant dient om een idee de vormen van hoe tools gebruikt kunnen worden. Docker bied zelf ook een tool aan voor het managen van docker containers namelijk Docker Compost. Een voorbeeld van een configuratiefile voor Vagrant en Docker Compose worden hieronder weergegeven. Beide zetten een docker container genaamd redis op van een image genaamd redis.
+
+\begin{lstlisting}[language=bash, style=configstyle]
+Vagrant.configure("2") do |config|
+	config.vm.provision "docker" do |d|
+		d.image = "redis"
+		d.name = "redis"
+	end
+end
+\end{lstlisting}
+Dit is een voorbeeld van een Vagrant file voor docker. Deze kan opgestart worden met het commando 'vagrant up'
+
+
+\begin{lstlisting}[language=bash, style=configstyle]
+#redis image
+redis:
+	image: redis
+\end{lstlisting}
+Dit is een voorbeeld van een Docker-compose file voor docker. Deze kan opgestart worden met het commando 'docker-compose up'
+
